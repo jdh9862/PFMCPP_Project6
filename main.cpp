@@ -78,10 +78,18 @@ struct Comparator                                //4
 struct U
 {
     float first { 0 }, second { 0 };
-//    <#returnType#> <#memberFunction#>(<#type name#>* <#updatedValue#>)      //12
-//    {
-//
-//    }
+    float update(float* updatedValue)      //12
+    {
+        std::cout << "U's first value: " << first << std::endl;
+        first = *updatedValue;
+        std::cout << "U's first updated value: " << first << std::endl;
+        while( std::abs(second - first) > 0.001f )
+        {
+            second += 0.00001f;
+        }
+        std::cout << "U's second updated value: " << second << std::endl;
+        return second * first;
+    }
 };
 
 struct Updater
@@ -130,6 +138,6 @@ int main()
     float updatedValue = 5.f;
     std::cout << "[static func] u1's multiplied values: " << Updater::update(&u1, &updatedValue) << std::endl;                  //11
 
-//    U <#name4#>;
-//    std::cout << "[member func] <#name4#>'s multiplied values: " << <#name4#>.<#memberFunction#>( &updatedValue ) << std::endl;
+    U u2;
+    std::cout << "[member func] u2's multiplied values: " << u2.update( &updatedValue ) << std::endl;
 }
