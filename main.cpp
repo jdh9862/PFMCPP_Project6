@@ -56,9 +56,10 @@ Purpose:  This project will show you the difference between member functions and
 
 #include <iostream>
 #include <string>
+
 struct T
 {
-    T(int inValue, const char* inName) : value(inValue), name(inName) {}   //1
+    T(int inValue, const char *inName) : value(inValue), name(inName) {}   //1
     //2
     int value;
     //3
@@ -67,23 +68,24 @@ struct T
 
 struct Comparator                                //4
 {
-    T* compare(T* a, T* b) //5
+    T *compare(T *a, T *b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if (a->value < b->value) return a;
+        if (a->value > b->value) return b;
         return nullptr;
     }
 };
 
 struct U
 {
-    float first { 0 }, second { 0 };
-    float update(float* updatedValue)      //12
+    float first{0}, second{0};
+
+    float update(float *updatedValue)      //12
     {
         std::cout << "U's first value: " << first << std::endl;
         first = *updatedValue;
         std::cout << "U's first updated value: " << first << std::endl;
-        while( std::abs(second - first) > 0.001f )
+        while (std::abs(second - first) > 0.001f)
         {
             second += 0.00001f;
         }
@@ -94,12 +96,12 @@ struct U
 
 struct Updater
 {
-    static float update(U* that, float* updatedValue )        //10
+    static float update(U *that, float *updatedValue)        //10
     {
         std::cout << "U's first value: " << that->first << std::endl;
         that->first = *updatedValue;
         std::cout << "U's first updated value: " << that->first << std::endl;
-        while( std::abs(that->second - that->first) > 0.001f )
+        while (std::abs(that->second - that->first) > 0.001f)
         {
             /*
              write something that makes the distance between that->second and that->first get smaller
@@ -110,7 +112,7 @@ struct Updater
         return that->second * that->first;
     }
 };
-        
+
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
 
@@ -127,17 +129,18 @@ struct Updater
 
 int main()
 {
-    T t1(1 , "first_T");                                             //6
-    T t2(2 , "second_T");                                             //6
-    
+    T t1(1, "first_T");                                             //6
+    T t2(2, "second_T");                                             //6
+
     Comparator f;                                            //7
-    auto* smaller = f.compare(&t1 , &t2);                              //8
+    auto *smaller = f.compare(&t1, &t2);                              //8
     std::cout << "the smaller one is << " << smaller->name << std::endl; //9
-    
+
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] u1's multiplied values: " << Updater::update(&u1, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] u1's multiplied values: " << Updater::update(&u1, &updatedValue)
+              << std::endl;                  //11
 
     U u2;
-    std::cout << "[member func] u2's multiplied values: " << u2.update( &updatedValue ) << std::endl;
+    std::cout << "[member func] u2's multiplied values: " << u2.update(&updatedValue) << std::endl;
 }
