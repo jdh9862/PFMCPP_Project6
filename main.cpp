@@ -58,7 +58,7 @@ Purpose:  This project will show you the difference between member functions and
 #include <string>
 struct T
 {
-    T(int value, const char* name) : value(value), name(name) {}   //1
+    T(int inValue, const char* inName) : value(inValue), name(inName) {}   //1
     //2
     int value;
     //3
