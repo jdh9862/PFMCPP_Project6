@@ -70,8 +70,11 @@ struct Comparator                                //4
 {
     T *compare(T *a, T *b) //5
     {
-        if (a->value < b->value) return a;
-        if (a->value > b->value) return b;
+        if (a != nullptr && b != nullptr) 
+        {
+            if (a->value < b->value) return a;
+            if (a->value > b->value) return b;        
+        }
         return nullptr;
     }
 };
@@ -134,7 +137,14 @@ int main()
 
     Comparator f;                                            //7
     auto *smaller = f.compare(&t1, &t2);                              //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    if (smaller == nullptr)
+    {
+        std::cout << "the objects were either equal or at least one of them was null" << std::endl;
+    }
+    else
+    {
+        std::cout << "the smaller one is << " << smaller->name << std::endl; //9        
+    }
 
     U u1;
     float updatedValue = 5.f;
