@@ -105,6 +105,11 @@ struct Updater
 {
     static float update(U* that, float* updatedValue)        //10
     {
+        if (that == nullptr)
+        {
+            std::cout << "U cannot be null" << std::endl;
+            return 0;
+        }
         if (updatedValue == nullptr)
         {
             std::cout << "U's new value cannot be null; U will not be changed" << std::endl;
@@ -157,4 +162,7 @@ int main()
 
     U u2;
     std::cout << "[member func] u2's multiplied values: " << u2.update(&updatedValue) << std::endl;
+
+    Updater::update(nullptr, nullptr);
+    u2.update(nullptr);
 }
