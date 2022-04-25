@@ -39,10 +39,10 @@ struct T
 
 struct Comparator                                //4
 {
-    T* compare(T* a, T* b) //5
+    T* compare(T& a, T& b) //5
     {
-        if (a->value < b->value) return a;
-        if (a->value > b->value) return b;
+        if (a.value < b.value) return &a;
+        if (a.value > b.value) return &b;
         return nullptr;
     }
 };
@@ -51,55 +51,37 @@ struct U
 {
     float first{0}, second{0};
 
-    float update(float* updatedValue)      //12
+    float update(const float& updatedValue)      //12
     {
-        if (updatedValue == nullptr)
+        std::cout << "U's first value: " << first << std::endl;
+        first = updatedValue;
+        std::cout << "U's first updated value: " << first << std::endl;
+        while (std::abs(second - first) > 0.001f)
         {
-            std::cout << "U's new value cannot be null; U will not be changed" << std::endl;
+            second += 0.00001f;
         }
-        else
-        {
-            std::cout << "U's first value: " << first << std::endl;
-            first = *updatedValue;
-            std::cout << "U's first updated value: " << first << std::endl;
-            while (std::abs(second - first) > 0.001f)
-            {
-                second += 0.00001f;
-            }
-            std::cout << "U's second updated value: " << second << std::endl;
-        }
+        std::cout << "U's second updated value: " << second << std::endl;
         return second * first;
     }
 };
 
 struct Updater
 {
-    static float update(U* that, float* updatedValue)        //10
+    static float update(U& that, const float& updatedValue)        //10
     {
-        if (that == nullptr)
+        std::cout << "U's first value: " << that.first << std::endl;
+        that.first = updatedValue;
+        std::cout << "U's first updated value: " << that.first << std::endl;
+        while (std::abs(that.second - that.first) > 0.001f)
         {
-            std::cout << "U cannot be null" << std::endl;
-            return 0;
+            /*
+             write something that makes the distance between that->second and that->first get smaller
+             */
+            that.second += 0.00001f;
         }
-        if (updatedValue == nullptr)
-        {
-            std::cout << "U's new value cannot be null; U will not be changed" << std::endl;
-        }
-        else
-        {
-            std::cout << "U's first value: " << that->first << std::endl;
-            that->first = *updatedValue;
-            std::cout << "U's first updated value: " << that->first << std::endl;
-            while (std::abs(that->second - that->first) > 0.001f)
-            {
-                /*
-                 write something that makes the distance between that->second and that->first get smaller
-                 */
-                that->second += 0.00001f;
-            }
-            std::cout << "U's second updated value: " << that->second << std::endl;
-        }
-        return that->second * that->first;
+        std::cout << "U's second updated value: " << that.second << std::endl;
+
+        return that.second * that.first;
     }
 };
 
@@ -123,17 +105,21 @@ int main()
     T t2(2, "second_T");                                             //6
 
     Comparator f;                                            //7
-    auto* smaller = f.compare(&t1, &t2);                              //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    auto *smaller = f.compare(t1, t2);                              //8
+    if (smaller == nullptr)
+    {
+        std::cout << "the objects were equal" << std::endl;
+    }
+    else
+    {
+        std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    }
 
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] u1's multiplied values: " << Updater::update(&u1, &updatedValue)
+    std::cout << "[static func] u1's multiplied values: " << Updater::update(u1, updatedValue)
               << std::endl;                  //11
 
     U u2;
-    std::cout << "[member func] u2's multiplied values: " << u2.update(&updatedValue) << std::endl;
-
-    Updater::update(nullptr, nullptr);
-    u2.update(nullptr);
+    std::cout << "[member func] u2's multiplied values: " << u2.update(updatedValue) << std::endl;
 }
