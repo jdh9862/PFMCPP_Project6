@@ -153,4 +153,7 @@ int main()
 
     U u2;
     std::cout << "[member func] u2's multiplied values: " << u2.update(&updatedValue) << std::endl;
+
+    Updater::update(nullptr, nullptr);
+    u2.update(nullptr);
 }
